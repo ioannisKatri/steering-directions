@@ -1,0 +1,138 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Directions API",
+    "description": "Directions API calculates steering directions",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Local server"
+    }
+  ],
+  "paths": {
+    "/directions": {
+      "get": {
+        "summary": "Accepts a heading and target as query parameters and returns the correct direction",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "heading",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 360
+            },
+            "description": " The absolute magnetic heading relative to the north pole of the current planet"
+          },
+          {
+            "in": "query",
+            "name": "target",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 360
+            },
+            "description": "The absolute bearing to the target."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the correct direction. It can be Straight or Left or Right",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "true"
+                    },
+                    "payload": {
+                      "type": "object",
+                      "properties": {
+                        "direction": {
+                          "type": "string",
+                          "example": "Straight"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "An error code with a specific description.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "payload": {
+                      "type": "object",
+                      "properties": {
+                        "errors": {
+                          "type": "array",
+                          "items": {
+                            "properties": {
+                              "message": {
+                                "type": "string",
+                                "example": "Query parameter must be a number between 0 and 360"
+                              },
+                              "field": {
+                                "type": "string",
+                                "example": "target"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An error code with a specific description.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": "false"
+                    },
+                    "payload": {
+                      "type": "object",
+                      "properties": {
+                        "errors": {
+                          "type": "array",
+                          "items": {
+                            "properties": {
+                              "message": {
+                                "type": "string",
+                                "example": "Specific Error Message"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
