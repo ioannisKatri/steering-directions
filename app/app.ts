@@ -2,7 +2,6 @@ import express, {Application, Request, Response, Router} from "express";
 import bodyParser from "body-parser";
 import swaggerUi from "swagger-ui-express";
 
-
 import directionRouter from "./routers/directionRouter";
 import {errorHandler} from "./middlewares/errorHandler";
 import swaggerDocument from "./swagger.json";

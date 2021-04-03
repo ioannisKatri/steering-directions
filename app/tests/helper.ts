@@ -10,7 +10,6 @@ export default function expectDirectionNegativeResponse(result: request.Response
     expect(result.body.payload.errors.length).toEqual(errorsLengthArray)
 }
 
-
 export function expectDirectionPositiveResponse(result: request.Response, status: number,
                                                 success: Boolean, direction: ValidDirections) {
     expect(result.status).toEqual(status);
