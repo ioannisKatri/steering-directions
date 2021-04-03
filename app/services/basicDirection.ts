@@ -29,11 +29,11 @@ export class BasicDirection implements Direction<ValidDirections> {
         const heading = this.directionRequest.heading;
         const target = this.directionRequest.target === 360 ? 0 : this.directionRequest.target;
 
-        const positiveDifferenceIsGreaterThan180Degrees = heading - target > 180;
+        const positiveDifferenceIsLessThan180Degrees = heading - target > 180;
         const headingIsSmallerThanTarget = heading < target;
         const negativeDifferenceIsLessThanMinus180Degrees = heading - target > -180;
 
-        return positiveDifferenceIsGreaterThan180Degrees ||
+        return positiveDifferenceIsLessThan180Degrees ||
             (headingIsSmallerThanTarget && negativeDifferenceIsLessThanMinus180Degrees);
     }
 }

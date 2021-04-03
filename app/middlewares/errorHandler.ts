@@ -1,4 +1,5 @@
 import {NextFunction, Request, Response} from 'express';
+
 import {CustomError} from "../utils/errors/customError";
 
 
@@ -9,6 +10,6 @@ export const errorHandler = (err: Error, req: Request, res: Response, next: Next
 
     return res.status(500).send({
         success: false,
-        payload: {errors: [ { message: "something went wrong" }]}
+        payload: {errors: [{message: "something went wrong"}]}
     });
 }

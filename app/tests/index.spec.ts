@@ -1,8 +1,9 @@
+import request from "supertest";
+
 import {BasicDirection} from "../services/basicDirection";
 import ValidDirections from "../utils/enums/ValidDirections";
 import app from "../app";
-import request from "supertest";
-import expectDirectionNegativeResponse from "./helper";
+import expectDirectionNegativeResponse, {expectDirectionPositiveResponse} from "./helper";
 
 describe("Testing directions functionality", () => {
 
@@ -11,62 +12,52 @@ describe("Testing directions functionality", () => {
         describe('Direction Positive scenarios ', () => {
             it('It returns status 200 and left if heading is 170 and target 360', async () => {
                 const result = await request(app)
-                    .get('/directions?heading=170&target=360')
-                    .send({})
-                expect(result.status).toEqual(200);
-                expect(result.body.success).toEqual(true);
-                expect(result.body.payload.direction).toEqual(ValidDirections.Left)
+                    .get('/directions?heading=170&target=360');
+
+                expectDirectionPositiveResponse(result, 200, true, ValidDirections.Left)
             })
 
             it('It returns status 200 and Right if heading is 170 and target 180', async () => {
                 const result = await request(app)
-                    .get('/directions?heading=170&target=180')
-                    .send({})
-                expect(result.status).toEqual(200);
-                expect(result.body.success).toEqual(true);
-                expect(result.body.payload.direction).toEqual(ValidDirections.Right)
+                    .get('/directions?heading=170&target=180');
+
+                expectDirectionPositiveResponse(result, 200, true, ValidDirections.Right)
             })
 
 
             it('It returns status 200 and Straight if heading is 170 and target 170', async () => {
                 const result = await request(app)
-                    .get('/directions?heading=170&target=170')
-                    .send({})
-                expect(result.status).toEqual(200);
-                expect(result.body.success).toEqual(true);
-                expect(result.body.payload.direction).toEqual(ValidDirections.Straight)
+                    .get('/directions?heading=170&target=170');
+
+                expectDirectionPositiveResponse(result, 200, true, ValidDirections.Straight)
             })
         })
 
         describe('Direction negative scenarios ', () => {
             it('It returns status 400 and an array of errors length 2 if we do not provide heading and target', async () => {
                 const result = await request(app)
-                    .get('/directions')
-                    .send({})
+                    .get('/directions');
 
                 expectDirectionNegativeResponse(result, 400, true, false, 2)
             })
 
             it('It returns status 400 and an array of errors length 1 if we do not provide target', async () => {
                 const result = await request(app)
-                    .get('/directions?heading=310')
-                    .send({})
+                    .get('/directions?heading=310');
 
                 expectDirectionNegativeResponse(result, 400, true, false, 1)
             })
 
             it('It returns status 400 and an array of errors length 1 if we do not provide heading', async () => {
                 const result = await request(app)
-                    .get('/directions?target=75')
-                    .send({})
+                    .get('/directions?target=75');
 
                 expectDirectionNegativeResponse(result, 400, true, false, 1)
             })
 
             it('It returns status 400 and an array of errors length 2 if we provide both with text instead of number', async () => {
                 const result = await request(app)
-                    .get('/directions?heading=asdsa&target=asdsada')
-                    .send({})
+                    .get('/directions?heading=asdsa&target=asdsada');
 
                 expectDirectionNegativeResponse(result, 400, true, false, 2)
             })
@@ -74,7 +65,7 @@ describe("Testing directions functionality", () => {
             it('It returns status 400 and an array of errors length 1 if heading includes text', async () => {
                 const result = await request(app)
                     .get('/directions?heading=asdas&target=75')
-                    .send({})
+
 
                 expectDirectionNegativeResponse(result, 400, true, false, 1)
             })
@@ -82,7 +73,6 @@ describe("Testing directions functionality", () => {
             it('It returns status 400 and an array of errors length 1 if target contains text', async () => {
                 const result = await request(app)
                     .get('/directions?heading=310&target=asdas')
-                    .send({})
 
                 expectDirectionNegativeResponse(result, 400, true, false, 1)
             })
@@ -90,7 +80,6 @@ describe("Testing directions functionality", () => {
             it('It returns status 400 and an array of errors length 2 if both contain values above 360', async () => {
                 const result = await request(app)
                     .get('/directions?heading=361&target=361')
-                    .send({})
 
                 expectDirectionNegativeResponse(result, 400, true, false, 2)
             })
@@ -98,7 +87,6 @@ describe("Testing directions functionality", () => {
             it('It returns status 400 and an array of errors length 2 if both contain values below zero', async () => {
                 const result = await request(app)
                     .get('/directions?heading=-1&target=-1')
-                    .send({})
 
                 expectDirectionNegativeResponse(result, 400, true, false, 2)
             })
