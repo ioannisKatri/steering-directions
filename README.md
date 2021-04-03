@@ -45,6 +45,11 @@ You can find the Api Swagger file:
 npm install
 ```
 
+#### Run without docker
+```
+npm run dev
+```
+
 #### Architecture
  
 ![Upload Api](https://i.ibb.co/d5Gs93M/image.png)
