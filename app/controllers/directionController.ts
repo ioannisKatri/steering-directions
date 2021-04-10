@@ -7,8 +7,8 @@ import ValidDirections from "../utils/enums/ValidDirections";
 
 const getDirections = async (req: Request, res: Response) => {
 
-    let heading: number = parseInt(<string>req.query.heading)
-    let target: number =  parseInt(<string>req.query.target)
+    const heading: number = parseInt(<string>req.query.heading)
+    const target: number =  parseInt(<string>req.query.target)
 
     const directions: DirectionRequest = {heading, target};
     const direction: Direction<ValidDirections> = new BasicDirection(directions);
